@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+option go_package = "./pb";
+
+service ChatService {
+    rpc JoinChannel(Channel) returns (stream Message) {}
+    rpc SendMessage(stream Message) returns (MessageAck) {}
+    rpc DeleteMessage(DeleteRequest) returns (Empty){}
+    rpc GetAllChats(Channel) returns (ListOfChats){}
+}
+
+message Channel {
+    string name = 1;
+    string senders_name = 2;
+}
+
+
+
+message ListOfChats {
+    repeated Message messages = 1;
+}
+
+
+message Message {
+    string senderID = 1;
+    Channel channel = 2;
+    string message = 3;
+    string meta = 4;
+    string file = 5;
+}
+
+message MessageAck {
+    string status = 1;
+}
+
+message DeleteRequest{
+    string chatID = 1;
+    string deletedBy = 2;
+}
+
+message Empty{}
